@@ -1,5 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { relative, resolve } from 'node:path';
+import { devNull } from 'node:os';
 import type { Command, Finding, InspectGit } from './types.js';
 
 /** No shell, network, hooks, external diff, or fsmonitor during an inspection. */
@@ -7,12 +8,12 @@ export const inspectGit: InspectGit = (cwd, args, timeoutMs = 400) => {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
   const result = spawnSync('git', [
     '-c', 'core.fsmonitor=false',
-    '-c', 'core.hooksPath=/dev/null',
+    '-c', `core.hooksPath=${devNull}`,
     '-c', 'core.untrackedCache=false',
     ...args,
   ], {
     cwd,
-    env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null' },
+    env: { ...env, GIT_OPTIONAL_LOCKS: '0', GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: devNull },
     encoding: 'utf8',
     timeout: Math.max(1, Math.min(timeoutMs, 400)),
     maxBuffer: 1024 * 1024,

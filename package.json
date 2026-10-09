@@ -5,18 +5,27 @@
   "description": "A local safety net for autonomous coding agents.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobeyBeswick/nomeatproxy.git"
+  },
+  "homepage": "https://github.com/RobeyBeswick/nomeatproxy#readme",
+  "bugs": { "url": "https://github.com/RobeyBeswick/nomeatproxy/issues" },
+  "keywords": ["ai", "agents", "hooks", "safety", "claude-code", "codex", "opencode"],
   "engines": { "node": ">=22" },
   "bin": { "nomeatproxy": "./dist/cli.js" },
   "exports": {
-    ".": "./dist/engine.js",
-    "./opencode": "./dist/adapters/opencode.js"
+    ".": { "types": "./dist/engine.d.ts", "default": "./dist/engine.js" },
+    "./opencode": { "types": "./dist/adapters/opencode.d.ts", "default": "./dist/adapters/opencode.js" }
   },
-  "files": ["dist", "README.md", "LICENSE", "NOTICE"],
+  "files": ["dist/**/*.js", "dist/**/*.d.ts", "docs/*.md", "README.md", "LICENSE", "NOTICE"],
   "scripts": {
-    "build": "tsc",
+    "build": "node scripts/build.mjs",
+    "prepare": "npm run build",
     "build:native": "node scripts/build-native.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "npm run build && node --test test/*.test.mjs",
+    "test": "npm run build && node scripts/test.mjs",
+    "test:package": "node scripts/test-package.mjs",
     "bench": "npm run build && node scripts/bench.mjs",
     "evaluate": "npm run build && node scripts/evaluate.mjs",
     "test:native": "npm run build && npm run build:native && node --test test/runtime.test.mjs",

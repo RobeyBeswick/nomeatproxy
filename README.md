@@ -49,38 +49,56 @@ review when it’s time to step in.
 
 ## ⚡ Quickstart
 
-Early days: build from source. Requires **Node.js 22+** and **Git**.
+Requires **Node.js 22+** and **Git**. No model subscription for the guard.
+No Go compiler for the standard installation. Your finger may now leave the approval button.
 
-From the repository root:
+The repository is currently private; there is no public npm release yet.
+With repository access and GitHub SSH authentication, install directly:
 
-```bash
-npm ci
-npm run build
+```sh
+npm install --global git+ssh://git@github.com/RobeyBeswick/nomeatproxy.git
+nomeatproxy install claude
+nomeatproxy doctor claude
 ```
+
+Already have a checkout or a package tarball? See the [installation guide](docs/SETUP.md).
+After public publication, the first line becomes `npm install --global nomeatproxy`.
+
+Pick your agent:
+
+```sh
+nomeatproxy install claude
+nomeatproxy install codex
+nomeatproxy install opencode
+nomeatproxy install antigravity
+```
+
+Run the line for the agent you use, then restart it. **Codex also requires hook
+review/trust through `/hooks`.** Antigravity support remains experimental.
+
+The installer merges into your user settings and backs up files it changes.
+Add `--project` to install only in the current project. It leaves your other hooks
+alone. `doctor` checks local setup; the agent's diagnostics confirm that it actually
+loaded and trusted the hook.
 
 Take it for a spin:
 
-```bash
-node dist/cli.js check 'git status --short'
-node dist/cli.js check 'rm -rf /'
+```sh
+nomeatproxy check "git status --short"
+nomeatproxy check "rm -rf /"
 ```
 
 **These commands only inspect the quoted strings. They do not execute them.**
 The first passes; the second is blocked with a reason.
 
-To hook it into Claude Code:
+The npm package targets macOS, Linux, and Windows. **Shell inspection currently
+covers POSIX syntax; PowerShell and cmd.exe operations are outside its coverage.**
+On Windows, use WSL for the POSIX workflow. Packaging tests and live agent coverage
+are separate; see [platform details](docs/SETUP.md#platforms).
 
-```bash
-node dist/cli.js config claude --workspace /absolute/path/to/your/project
-```
-
-This prints a settings fragment. Merge it into `.claude/settings.json` or
-`~/.claude/settings.json`, then reload the agent’s hooks. It does not change your
-settings automatically.
-
-Use `config codex` or `config antigravity` for those agents. OpenCode uses a plugin.
-The [setup guide](docs/SETUP.md) has the exact steps for each agent and the optional
-faster hook transport.
+Changed your mind? `nomeatproxy uninstall claude` removes the managed hook.
+The [setup guide](docs/SETUP.md) covers updates, manual configuration, and the optional
+faster hook transport. Homebrew distribution is not published yet.
 
 <a id="demo"></a>
 
@@ -200,6 +218,7 @@ with secrets removed.
 
 ```bash
 npm run check       # typecheck, build, and behavior tests
+npm run test:package # install and exercise the packed npm artifact
 npm run evaluate    # labeled examples, including known coverage gaps
 npm run bench       # measure engine and hook overhead
 ```

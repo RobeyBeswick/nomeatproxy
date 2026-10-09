@@ -1,7 +1,7 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, symlinkSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { tmpdir, devNull } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { check } from '../dist/engine.js';
@@ -47,7 +47,7 @@ for (const command of ['rm -rf "$TARGET"', 'rm -rf *', 'rm -rf ~/Documents', 'rm
 test('resolves symlink escapes without following a submitted command', () => {
   const outside = join(root, 'outside');
   mkdirSync(outside);
-  symlinkSync(outside, join(workspace, 'link'));
+  symlinkSync(outside, join(workspace, 'link'), 'junction');
   assert.ok(rules(check(request('rm -rf link/child'))).includes('filesystem.outside-workspace'));
 });
 
@@ -98,12 +98,13 @@ test('malformed and oversized commands stop inspection', () => {
 function git(cwd, ...args) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
   const result = spawnSync('git', [
-    '-c', 'core.hooksPath=/dev/null',
+    '-c', `core.hooksPath=${devNull}`,
+    '-c', 'core.autocrlf=false',
     '-c', 'commit.gpgsign=false',
     '-c', 'user.name=NoMeatProxy Test',
     '-c', 'user.email=nomeatproxy@example.invalid',
     ...args,
-  ], { cwd, env: { ...env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null' }, encoding: 'utf8' });
+  ], { cwd, env: { ...env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: devNull }, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
   return result.stdout;
 }
@@ -317,7 +318,7 @@ test('CLI check is non-executing; config contains an executable absolute hook pa
   const config = spawnSync(process.execPath, [cli, 'config', 'claude'], { encoding: 'utf8' });
   assert.equal(config.status, 0);
   const hook = JSON.parse(config.stdout).hooks.PreToolUse[0].hooks[0];
-  assert.ok(hook.command.includes(cli));
+  assert.ok(hook.command.includes(cli) || hook.args?.includes(cli));
   assert.equal(hook.async, undefined);
   const anti = spawnSync(process.execPath, [cli, 'config', 'antigravity'], { encoding: 'utf8' });
   assert.equal(JSON.parse(anti.stdout).nomeatproxy.PreToolUse[0].matcher, 'run_command');

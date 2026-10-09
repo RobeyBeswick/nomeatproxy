@@ -28,8 +28,12 @@ production safety certification.
   precedence and no implicit trust in names like `dist`.
 - [ ] Detect unsupported wrappers without silently overstating inspection.
 - [ ] Expand coverage to file writes/redirections and selected task-runner paths.
-- [ ] Add safe installation/uninstallation with settings merge, backup, hook
-  discovery, and a harmless compatibility self-test.
+- [x] Add installation/uninstallation with settings merge, backups, and local
+  setup diagnostics with non-executing checker fixtures.
+- [x] Package prebuilt JavaScript for npm, with agent installers and isolated
+  tarball installation tests on macOS, Linux, and Windows in CI.
+- [ ] Publish the first public npm release after distribution approval.
+- [ ] Add a Homebrew tap backed by a published, checksummed release artifact.
 - [x] Verify a live allow/block canary in Claude bypass mode, Codex permissive
   mode, and OpenCode auto mode. Versions and exact test scope are recorded.
 - [x] Add Antigravity's documented payload/decision/configuration adapter.

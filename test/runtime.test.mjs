@@ -10,7 +10,7 @@ import { runHook } from '../dist/adapters/hook.js';
 
 const root = mkdtempSync(join(tmpdir(), 'nmp-runtime-'));
 const native = resolve('dist/nomeatproxy-hook');
-const hasNative = existsSync(native);
+const hasNative = process.platform !== 'win32' && existsSync(native);
 after(() => rmSync(root, { recursive: true, force: true }));
 const close = server => new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
 let serial = 0;
@@ -41,7 +41,7 @@ test('resident dispatcher rejects unknown protocol and missing fields', () => {
   assert.equal(dispatch({ version: 1, agent: 'claude', cwd: root, input: payload('ls') }).result.stdout, '');
 });
 
-test('server refuses public directories and existing files without replacing them', async () => {
+test('server refuses public directories and existing files without replacing them', { skip: process.platform === 'win32' }, async () => {
   const dir = join(root, 'public');
   mkdirSync(dir, { mode: 0o755 });
   await assert.rejects(serve(join(dir, 'guard.sock')), /0700/);

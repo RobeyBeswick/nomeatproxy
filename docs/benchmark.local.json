@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-09T08:32:50.812Z",
+  "machine": {
+    "node": "v25.9.0",
+    "platform": "darwin 25.6.0",
+    "cpu": "Apple M3 Pro"
+  },
+  "scope": "Warm filesystem, fresh client processes, resident round trips when the optional launcher is built, and one small local Git fixture. No agent framework or remote services. Inspected fixture commands are never executed.",
+  "results": [
+    {
+      "name": "engine: git status --short",
+      "samples": 1000,
+      "p50Ms": 0.002,
+      "p95Ms": 0.005,
+      "maxMs": 0.238
+    },
+    {
+      "name": "CLI including startup: git status --short",
+      "samples": 50,
+      "p50Ms": 81.731,
+      "p95Ms": 88.704,
+      "maxMs": 93.448
+    },
+    {
+      "name": "engine: rm -rf /",
+      "samples": 1000,
+      "p50Ms": 0.037,
+      "p95Ms": 0.048,
+      "maxMs": 0.081
+    },
+    {
+      "name": "CLI including startup: rm -rf /",
+      "samples": 50,
+      "p50Ms": 81.08,
+      "p95Ms": 87.761,
+      "maxMs": 112.303
+    },
+    {
+      "name": "native startup + resident round trip: git status --short",
+      "samples": 50,
+      "p50Ms": 7.897,
+      "p95Ms": 9.216,
+      "maxMs": 9.581
+    },
+    {
+      "name": "native startup + resident round trip: rm -rf /",
+      "samples": 50,
+      "p50Ms": 7.459,
+      "p95Ms": 8.55,
+      "maxMs": 9.056
+    },
+    {
+      "name": "engine with real Git probe: clean-tree reset inspection",
+      "samples": 20,
+      "p50Ms": 27.637,
+      "p95Ms": 29.33,
+      "maxMs": 31.763
+    }
+  ]
+}

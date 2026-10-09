@@ -1,7 +1,7 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, symlinkSync } from 'node:fs';
-import { tmpdir, devNull } from 'node:os';
+import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { check } from '../dist/engine.js';
@@ -98,13 +98,13 @@ test('malformed and oversized commands stop inspection', () => {
 function git(cwd, ...args) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
   const result = spawnSync('git', [
-    '-c', `core.hooksPath=${devNull}`,
+    '-c', 'core.hooksPath=/dev/null',
     '-c', 'core.autocrlf=false',
     '-c', 'commit.gpgsign=false',
     '-c', 'user.name=NoMeatProxy Test',
     '-c', 'user.email=nomeatproxy@example.invalid',
     ...args,
-  ], { cwd, env: { ...env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: devNull }, encoding: 'utf8' });
+  ], { cwd, env: { ...env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null' }, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
   return result.stdout;
 }

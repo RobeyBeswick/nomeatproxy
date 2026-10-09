@@ -48,6 +48,14 @@ try {
     : join(prefix, 'lib', 'node_modules', 'nomeatproxy');
   const importer = `import { check } from ${JSON.stringify(pathToFileURL(join(packageRoot, 'dist', 'engine.js')).href)}; if(check({command:'git push --force origin main',cwd:process.cwd()}).decision!=='deny') process.exit(1)`;
   run(process.execPath, ['--input-type=module', '-e', importer], { cwd: stage });
+  // Normal installation must work too: registry/tarball consumers must not
+  // need the prepare script's compiler or source files.
+  const normalPrefix = join(stage, 'normal');
+  run(process.execPath, [npm, 'install', '--global', '--prefix', normalPrefix, '--no-audit', '--no-fund', join(stage, packed.filename)]);
+  const normalCli = process.platform === 'win32'
+    ? join(normalPrefix, 'node_modules', 'nomeatproxy', 'dist', 'cli.js')
+    : join(normalPrefix, 'lib', 'node_modules', 'nomeatproxy', 'dist', 'cli.js');
+  assert.equal(run(process.execPath, [normalCli, '--version']).trim(), version);
   console.log(`Package smoke test passed: ${packed.filename}, ${files.length} files, ${Math.ceil(packed.size / 1024)} KiB compressed.`);
 } finally {
   rmSync(stage, { recursive: true, force: true });

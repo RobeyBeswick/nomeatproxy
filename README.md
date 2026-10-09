@@ -53,10 +53,11 @@ Requires **Node.js 22+** and **Git**. No model subscription for the guard.
 No Go compiler for the standard installation. Your finger may now leave the approval button.
 
 The repository is currently private; there is no public npm release yet.
-With repository access and GitHub SSH authentication, install directly:
+Download and unzip the `nomeatproxy-npm` artifact from the latest successful
+**Check** run in GitHub Actions, then install the included package:
 
 ```sh
-npm install --global git+ssh://git@github.com/RobeyBeswick/nomeatproxy.git
+npm install --global ./nomeatproxy-0.0.1.tgz
 nomeatproxy install claude
 nomeatproxy doctor claude
 ```

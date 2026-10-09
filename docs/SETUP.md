@@ -7,20 +7,17 @@ has its own requirements below.
 ## Install the CLI
 
 NoMeatProxy is currently in a private repository, with public npm publication
-disabled. Choose one of these installation routes.
-
-With repository access and GitHub SSH authentication:
-
-```sh
-npm install --global git+ssh://git@github.com/RobeyBeswick/nomeatproxy.git
-```
-
-npm builds the TypeScript during installation from Git. A tarball already contains
-compiled JavaScript and declarations; installing it requires no compiler:
+disabled. Download and unzip the `nomeatproxy-npm` artifact from the latest
+successful **Check** run in the private repository's GitHub Actions tab.
+The included tarball contains compiled JavaScript and declarations; installing
+it requires no compiler:
 
 ```sh
 npm install --global ./nomeatproxy-0.0.1.tgz
 ```
+
+Use the package artifact or a checkout build, rather than a direct npm Git URL.
+Direct global Git installation produced a broken cache symlink in local testing.
 
 To make that tarball from a checkout:
 

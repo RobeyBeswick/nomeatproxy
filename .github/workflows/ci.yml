@@ -22,3 +22,14 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run test:package
+      - name: Build downloadable npm package
+        if: matrix.os == 'ubuntu-latest' && matrix.node == 24
+        run: |
+          mkdir -p artifacts
+          npm pack --pack-destination artifacts
+      - uses: actions/upload-artifact@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.node == 24
+        with:
+          name: nomeatproxy-npm
+          path: artifacts/*.tgz
+          if-no-files-found: error

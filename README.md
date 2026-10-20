@@ -105,6 +105,22 @@ faster hook transport. Homebrew distribution is not published yet.
 
 ## 🎬 Demo
 
+[▶ Watch the NoMeatProxy demo](docs/assets/nomeatproxy-video.mov)
+
+Run the repeatable walkthrough from a checkout:
+
+```sh
+npm ci
+npm run demo
+```
+
+Press **Enter** to advance through five real hook checks: routine work, an
+uncommitted edit, the same restore after staging, ignored data, and a force push.
+The demo uses a temporary Git repository and scripted requests; proposed commands
+are inspected, never executed. No live agent or published npm package is needed.
+
+Run all scenes without pauses: `npm run demo -- --auto`.
+
 The agent decides the quickest way to “fix the branch” is:
 
 ```text

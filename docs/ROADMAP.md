@@ -32,7 +32,7 @@ production safety certification.
   setup diagnostics with non-executing checker fixtures.
 - [x] Package prebuilt JavaScript for npm, with agent installers and isolated
   tarball installation tests on macOS, Linux, and Windows in CI.
-- [ ] Publish the first public npm release after distribution approval.
+- [ ] Publish the first npm release.
 - [ ] Add a Homebrew tap backed by a published, checksummed release artifact.
 - [x] Verify a live allow/block canary in Claude bypass mode, Codex permissive
   mode, and OpenCode auto mode. Versions and exact test scope are recorded.

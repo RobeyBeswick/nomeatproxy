@@ -151,7 +151,7 @@ function cleanup() {
   rmSync(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
 }
 
-// Cover normal completion, early input closure, and recording interruptions.
+// Cover normal completion, early input closure, and interruptions.
 process.once('exit', cleanup);
 process.once('SIGINT', () => process.exit(130));
 process.once('SIGTERM', () => process.exit(143));

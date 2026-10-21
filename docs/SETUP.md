@@ -6,33 +6,30 @@ has its own requirements below.
 
 ## Install the CLI
 
-NoMeatProxy is currently in a private repository, with public npm publication
-disabled. Download and unzip the `nomeatproxy-npm` artifact from the latest
-successful **Check** run in the private repository's GitHub Actions tab.
-The included tarball contains compiled JavaScript and declarations; installing
-it requires no compiler:
+An npm registry release is planned. Build and install from a checkout:
 
 ```sh
-npm install --global ./nomeatproxy-0.0.1.tgz
-```
-
-Use the package artifact or a checkout build, rather than a direct npm Git URL.
-Direct global Git installation produced a broken cache symlink in local testing.
-
-To make that tarball from a checkout:
-
-```sh
+git clone https://github.com/RobeyBeswick/nomeatproxy.git
+cd nomeatproxy
 npm ci
 npm pack
 npm install --global ./nomeatproxy-0.0.1.tgz
 ```
+
+Already have a checkout? Start with `npm ci`.
+
+For a prebuilt package, download and unzip the `nomeatproxy-npm` artifact from a
+successful **Check** run in GitHub Actions, then run the `npm install --global`
+line above. The tarball includes compiled JavaScript and declarations, so
+installing it requires no compiler. Use the packed tarball for global
+installation.
 
 These npm commands work in a POSIX shell, PowerShell, or cmd.exe. Ensure the npm
 global executable directory is on your PATH, then check `nomeatproxy --version`.
 If PowerShell's execution policy blocks the npm shim, use `npm.cmd` and
 `nomeatproxy.cmd`, or use cmd.exe; no execution-policy change is required.
 
-After a public release, the installation command will be
+After the first npm release, the installation command will be
 `npm install --global nomeatproxy`. That registry release is **not available yet**.
 Homebrew is a possible additional route for macOS/Linux, but no tap or formula
 has been published. npm is the first distribution route.

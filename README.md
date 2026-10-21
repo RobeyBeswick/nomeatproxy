@@ -52,18 +52,20 @@ review when it’s time to step in.
 Requires **Node.js 22+** and **Git**. No model subscription for the guard.
 No Go compiler for the standard installation. Your finger may now leave the approval button.
 
-The repository is currently private; there is no public npm release yet.
-Download and unzip the `nomeatproxy-npm` artifact from the latest successful
-**Check** run in GitHub Actions, then install the included package:
+An npm registry release is planned. Build and install from a checkout:
 
 ```sh
+git clone https://github.com/RobeyBeswick/nomeatproxy.git
+cd nomeatproxy
+npm ci
+npm pack
 npm install --global ./nomeatproxy-0.0.1.tgz
 nomeatproxy install claude
 nomeatproxy doctor claude
 ```
 
-Already have a checkout or a package tarball? See the [installation guide](docs/SETUP.md).
-After public publication, the first line becomes `npm install --global nomeatproxy`.
+For prebuilt packages and other installation options, see the
+[installation guide](docs/SETUP.md).
 
 Pick your agent:
 

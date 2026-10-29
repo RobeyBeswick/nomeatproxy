@@ -244,7 +244,7 @@ npm run evaluate    # labeled examples, including known coverage gaps
 npm run bench       # measure engine and hook overhead
 ```
 
-[Design](docs/DESIGN.md) · [Roadmap](docs/ROADMAP.md) · [Developer setup](docs/SETUP.md#development)
+[Design](docs/DESIGN.md) · [Roadmap](docs/ROADMAP.md) · [Developer setup](docs/SETUP.md#development) · [Publishing checklist](docs/PUBLISHING.md)
 
 ## 📄 License
 

@@ -241,7 +241,7 @@ npm run evaluate    # labeled examples, including known coverage gaps
 npm run bench       # measure engine and hook overhead
 ```
 
-[Design](docs/DESIGN.md) · [Roadmap](docs/ROADMAP.md) · [Developer setup](docs/SETUP.md#development) · [Publishing checklist](docs/PUBLISHING.md)
+[Design](docs/DESIGN.md) · [Roadmap](docs/ROADMAP.md) · [Developer setup](docs/SETUP.md#development) · [Publishing checklist](https://github.com/RobeyBeswick/nomeatproxy/blob/main/docs/PUBLISHING.md)
 
 ## 📄 License
 

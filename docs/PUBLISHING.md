@@ -20,11 +20,11 @@ Local verification on 2026-10-29 passed on `chore/public-launch` with Node.js
 22.23.4, npm 10.9.9, and Go installed:
 
 - `npm ci`, `npm run check` (80 passed, 6 native tests skipped pending the separate native run), and all eight native-transport tests.
-- Packed-package installation test: 34 files, approximately 42 KiB compressed.
+- Packed-package installation test: 35 files, approximately 39 KiB compressed.
 - Evaluation corpus: 16 benign cases, 17 covered hazards, and three explicit coverage gaps.
-- `npm run demo -- --auto` and `npm pack --dry-run`; packed files exclude local reports, fixtures, native binaries, and the demo video.
+- `npm run demo -- --auto` and `npm pack --dry-run`; the package includes the changelog and security policy, excludes this publishing checklist, local reports, fixtures, native binaries, and the demo video.
 - `npm audit`: zero reported vulnerabilities. `npm outdated` found no newer compatible versions; `npm update` made no dependency changes.
-- `gitleaks git --redact .`: seven commits scanned, no leaks found.
+- `gitleaks git --redact .`: nine commits scanned, no leaks found.
 
 Rerun verification on the exact final `main` commit. Gitleaks does not replace
 the remaining audio and signed-out link review.
@@ -178,9 +178,10 @@ not tested on this machine, retain the earlier dated evidence and do not claim
 it was freshly validated.
 
 - [x] All applicable local checks pass.
-- [x] Inspect the package file list: compiled JavaScript, declarations,
-  documentation, and licensing are present; secrets, local reports, fixtures,
-  native binaries, and the demo video are absent.
+- [x] Inspect the package file list: compiled JavaScript, declarations, product
+  documentation, changelog, security policy, and licensing are present; the
+  publishing checklist, local reports, fixtures, native binaries, and demo video
+  are absent.
 - [x] Review and commit release changes with a conventional commit message.
   Stage specific intended files rather than generated reports or credentials.
 - [ ] Push the branch and merge through a reviewed pull request:

@@ -17,7 +17,20 @@
     ".": { "types": "./dist/engine.d.ts", "default": "./dist/engine.js" },
     "./opencode": { "types": "./dist/adapters/opencode.d.ts", "default": "./dist/adapters/opencode.js" }
   },
-  "files": ["dist/**/*.js", "dist/**/*.d.ts", "docs/*.md", "README.md", "LICENSE", "NOTICE"],
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "docs/BENCHMARKS.md",
+    "docs/COMPATIBILITY.md",
+    "docs/DESIGN.md",
+    "docs/ROADMAP.md",
+    "docs/SETUP.md",
+    "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "LICENSE",
+    "NOTICE"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "prepare": "npm run build",

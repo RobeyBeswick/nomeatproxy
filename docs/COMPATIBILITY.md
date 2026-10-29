@@ -1,13 +1,18 @@
 # Agent compatibility
 
-Measured 2026-10-09. Raw sanitized results: [compatibility.local.json](compatibility.local.json).
+Claude Code and Codex were measured 2026-10-09; OpenCode was retested
+2026-10-29. Sanitized canary summaries:
+[compatibility.local.json](compatibility.local.json).
 
-| Agent | Version | Tested mode | Result |
-| --- | --- | --- | --- |
-| Claude Code | 2.1.295 | `--dangerously-skip-permissions` | Live canary verified |
-| Codex | 0.162.0 | `--dangerously-bypass-approvals-and-sandbox`, with invocation-scoped hook trust bypass | Live canary verified |
-| OpenCode | 1.18.30 | `--auto` | Live canary verified |
-| Antigravity | Live version not checked | Documented `run_command` protocol | Adapter/configuration tests only |
+| Agent | Version | Test date | Tested mode | Result |
+| --- | --- | --- | --- | --- |
+| Claude Code | 2.1.295 | 2026-10-09 | `--dangerously-skip-permissions` | Live canary verified |
+| Codex | 0.162.0 | 2026-10-09 | `--dangerously-bypass-approvals-and-sandbox`, with invocation-scoped hook trust bypass | Live canary verified |
+| OpenCode | 1.19.5 | 2026-10-29 | `--auto` | Live canary verified |
+| Antigravity | Live version not checked | — | Documented `run_command` protocol | Adapter/configuration tests only |
+
+Claude Code and Codex have not been retested since 2026-10-09. Their listed
+versions are the older tested versions, not a claim about current releases.
 
 ## What the live result establishes
 
@@ -22,10 +27,11 @@ All three agents exited successfully without working around the block. The
 recorded host tool names were `Bash` for Claude/Codex and `bash` for OpenCode.
 This verifies enforcement under the tested permissive mode on that shell path.
 
-The Claude and Codex canaries exercised the direct Node hook. The OpenCode canary
-used its in-process plugin. The native resident path has separate parity and
-failure-mode tests plus a benchmark; it has not yet been exercised through a
-live agent in this run.
+The Claude and Codex canaries exercised the direct Node hook. The OpenCode canaries
+used its in-process plugin. The 2026-10-29 OpenCode run observed both the allowed
+control and blocked disposable deletion, and preserved the sentinel. The native
+resident path has separate parity and failure-mode tests plus a benchmark; it has
+not yet been exercised through a live agent.
 
 This is not certification for every native tool, code-mode call, background
 process, shell continuation, remote tool, or future client version. The two

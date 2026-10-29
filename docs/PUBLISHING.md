@@ -8,31 +8,31 @@ The handoff itself does not publish a package or change repository visibility.
 
 | Area | Status |
 | --- | --- |
-| Source | `main`; implementation last changed before this documentation handoff |
-| Package | `0.0.1`, with `"private": true`; publishing is disabled |
-| GitHub | Repository is private; no release or version tag exists |
-| npm | No package found when checked on 2026-10-27; recheck before release |
-| CI | Latest `Check` run did not start its jobs because of a billing/spending-limit block |
-| Live compatibility | Results dated 2026-10-09; refresh for the clients named in the launch |
-| Public-content review | Basic text/history scan completed; dedicated secret scan, video, and Actions-log review remain |
+| Source | `chore/public-launch`, release-preparation changes based on `main` |
+| Package | `0.1.0`, publishing enabled in the release branch |
+| GitHub | Repository is public; no release or version tag exists |
+| npm | Package returned 404 on 2026-10-29; npm authentication is now confirmed, but the package is not published |
+| CI | All six PR matrix jobs passed on release head `be30fdc` on 2026-10-29 |
+| Live compatibility | OpenCode 1.19.5 verified 2026-10-29; Claude Code 2.1.295 and Codex 0.162.0 remain tested 2026-10-09; Antigravity is adapter-only |
+| Public-content review | Gitleaks and Actions-log scans clean; artifact inspected; visual sampling every 2 seconds and user audio review found no private demo content; signed-out link check found a broken attachment URL, removed in this branch |
 
-Local verification on 2026-10-27 passed against commit `cdddb08`:
+Local verification on 2026-10-29 passed on `chore/public-launch` with Node.js
+22.23.4/npm 10.9.9 and Node.js 24.22.2/npm 11.19.1, with Go installed:
 
-- Typecheck and all 86 tests.
-- Packed-package installation test: 33 files, approximately 38 KiB compressed.
-- All eight native-transport tests.
-- Evaluation corpus, including its explicitly documented coverage gaps.
-- npm audit: zero reported vulnerabilities.
+- `npm ci` and `npm run check` passed on both Node versions. Node 22: 80 tests passed, 6 native tests skipped; separate native run passed all 8. Node 24: all 86 tests passed, plus all 8 native tests.
+- Packed-package installation test: 35 files, approximately 39 KiB compressed, on both Node versions.
+- Evaluation corpus: 16 benign cases, 17 covered hazards, and three explicit coverage gaps.
+- `npm run demo -- --auto` and `npm pack --dry-run`; the package includes the changelog and security policy, excludes this publishing checklist, local reports, fixtures, native binaries, and the demo video.
+- `npm audit`: zero reported vulnerabilities. `npm outdated` found no newer compatible versions; `npm update` made no dependency changes.
+- `gitleaks git --redact .`: history scan and current-file scan found no leaks.
 
-These results are a baseline. Rerun verification after release changes and on the
-personal laptop. The earlier pattern scan covered six commits and found no
-obvious personal paths, internal domains, account IDs, or credential patterns;
-it was not a complete secret or media review.
+Rerun verification on the exact final `main` commit and repeat the signed-out
+link check after the release PR is merged.
 
 ## 1. Set up the personal laptop
 
-- [ ] Install Git, Node.js 22 or 24 with npm, and the GitHub CLI.
-- [ ] Authenticate the GitHub CLI with an account that can access this private
+- [x] Install Git, Node.js 22 or 24 with npm, and the GitHub CLI.
+- [x] Authenticate the GitHub CLI with an account that can access this private
   repository. Run `gh auth login` if needed, then clone:
 
 ```sh
@@ -42,11 +42,11 @@ git status --short --branch
 npm ci
 ```
 
-- [ ] Install Go if validating the optional native transport. The standard npm
+- [x] Install Go if validating the optional native transport. The standard npm
   package does not require Go; see [setup](SETUP.md#optional-fast-transport).
-- [ ] Install and authenticate any agent clients used for live compatibility
+- [x] Install and authenticate any agent clients used for live compatibility
   checks. Do not copy credentials or agent settings into this repository.
-- [ ] Confirm access to the npm account that will own the package:
+- [x] Confirm access to the npm account that will own the package:
 
 ```sh
 npm login
@@ -60,19 +60,18 @@ package name and update documentation and packaging tests before continuing.
 
 ## 2. Finish the public-content review
 
-- [ ] Run a history-aware secret scan, for example `gitleaks git --redact .`
+- [x] Run a history-aware secret scan, for example `gitleaks git --redact .`
   after installing Gitleaks, and inspect any findings.
-- [ ] Review tracked files and commit metadata for personal paths, internal
+- [x] Review tracked files and commit metadata for personal paths, internal
   URLs, account IDs, customer details, and secrets. Keep scan reports private.
-- [ ] Watch `docs/assets/nomeatproxy-video.mov` and inspect the embedded README
-  video for private terminal content, notifications, paths, and identifiers.
-- [ ] Review existing Actions logs and artifacts before changing visibility;
+- [x] Watch `docs/assets/nomeatproxy-video.mov` and inspect the README video for
+  private terminal content, notifications, paths, and identifiers.
+- [x] Review existing Actions logs and artifacts before changing visibility;
   they can become publicly accessible with the repository.
-- [ ] Check links as an outside reader. `NOTICE` references PlanSentry, whose
-  repository was private at the previous review. Preserve the copyright and
-  license attribution; clarify source availability or publish the upstream
-  separately if intended. This release does not require making another
-  repository public.
+- [ ] Check links as an outside reader. The PlanSentry source repository remains
+  private; its source availability is clarified in `NOTICE`. Preserve the
+  copyright and license attribution. This release does not require making
+  another repository public.
 
 Remove sensitive material from history as well as the current checkout if any
 is found, and rotate exposed credentials before publishing.
@@ -92,11 +91,11 @@ git diff -- package.json package-lock.json
 `npm outdated` can exit nonzero when it finds newer versions. Review the output
 before continuing; do not treat every newer major as required release work.
 
-- [ ] Confirm `package.json` and `package-lock.json` both report `0.1.0`, with
+- [x] Confirm `package.json` and `package-lock.json` both report `0.1.0`, with
   publishing enabled.
-- [ ] Review every dependency change and commit the lockfile.
-- [ ] Keep Node types aligned with the minimum supported runtime.
-- [ ] If changing the supported Node versions, update `engines`, documentation,
+- [x] Review dependency changes and commit the lockfile.
+- [x] Keep Node types aligned with the minimum supported runtime.
+- [x] If changing the supported Node versions, update `engines`, documentation,
   and the CI matrix together.
 
 The handoff baseline uses TypeScript `5.9.3` and locked Node types `22.20.5`.
@@ -110,16 +109,16 @@ matrix to pass. Action modernization can follow the first release.
 
 ## 4. Prepare the release documentation
 
-- [ ] Update the quickstart in [README](../README.md) and [setup](SETUP.md) to
+- [x] Update the quickstart in [README](../README.md) and [setup](SETUP.md) to
   use the registry installation below when the package is published.
-- [ ] Update retained tarball examples from `0.0.1` to `0.1.0`.
-- [ ] Add a root `CHANGELOG.md` entry for `0.1.0`, including supported operations,
+- [x] Update retained tarball examples from `0.0.1` to `0.1.0`.
+- [x] Add a root `CHANGELOG.md` entry for `0.1.0`, including supported operations,
   agent integrations, installation, and known limitations.
-- [ ] Add a root `SECURITY.md` with a working private reporting route. Configure
+- [x] Add a root `SECURITY.md` with a working private reporting route. Configure
   that route before advertising it.
-- [ ] Keep the prototype label, POSIX-shell coverage limits, and Antigravity's
+- [x] Keep the prototype label, POSIX-shell coverage limits, and Antigravity's
   experimental status unless fresh evidence supports changing them.
-- [ ] Keep benchmark claims tied to their measured runtime and transport.
+- [x] Keep benchmark claims tied to their measured runtime and transport.
   The advertised native/resident timing is not the default Node CLI timing.
 - [ ] Update the npm milestone in [roadmap](ROADMAP.md) after publication succeeds.
 
@@ -146,15 +145,15 @@ node scripts/compat.mjs codex
 node scripts/compat.mjs opencode
 ```
 
-- [ ] Verify each advertised integration observes the allowed control, blocks
+- [x] Verify each advertised integration observes the allowed control, blocks
   the disposable deletion canary, and preserves the sentinel.
-- [ ] Record actual client versions, test date, mode, and results in
+- [x] Record actual client versions, test date, mode, and results in
   [compatibility](COMPATIBILITY.md).
-- [ ] Sanitize any results copied to `docs/compatibility.local.json`; keep raw
+- [x] Sanitize any results copied to `docs/compatibility.local.json`; keep raw
   transcripts, temporary paths, and authentication details out of Git.
-- [ ] If a client cannot be validated, state the older tested version or narrow
+- [x] If a client cannot be validated, state the older tested version or narrow
   the launch claim. Do not label an inconclusive run as a pass.
-- [ ] Leave Antigravity experimental unless live enforcement is validated.
+- [x] Leave Antigravity experimental unless live enforcement is validated.
 
 The harness invokes real clients and can consume their configured model usage.
 Its requests target a disposable test fixture. Follow the full scope and limits
@@ -178,11 +177,12 @@ Run `test:native` on macOS/Linux with Go installed. If the optional transport is
 not tested on this machine, retain the earlier dated evidence and do not claim
 it was freshly validated.
 
-- [ ] All applicable checks pass.
-- [ ] Inspect the package file list: compiled JavaScript, declarations,
-  documentation, and licensing are present; secrets, local reports, fixtures,
-  native binaries, and the demo video are absent.
-- [ ] Review and commit release changes with a conventional commit message.
+- [x] All applicable local checks pass.
+- [x] Inspect the package file list: compiled JavaScript, declarations, product
+  documentation, changelog, security policy, and licensing are present; the
+  publishing checklist, local reports, fixtures, native binaries, and demo video
+  are absent.
+- [x] Review and commit release changes with a conventional commit message.
   Stage specific intended files rather than generated reports or credentials.
 - [ ] Push the branch and merge through a reviewed pull request:
 
@@ -190,18 +190,18 @@ it was freshly validated.
 git push -u origin chore/public-launch
 ```
 
-- [ ] Resolve the Actions billing/spending-limit block and obtain a successful
-  `Check` run for the final release commit. All six combinations of macOS,
-  Linux, Windows, and Node 22/24 should pass.
+- [x] Obtain a successful `Check` run for the release candidate. All six jobs
+  passed on `be30fdc`; rerun after any additional release-content changes. The
+  matrix covers macOS, Linux, Windows, and Node 22/24.
 
 If changing visibility before rerunning CI is necessary, complete the public
 review first. Still require passing CI before publishing the package or post.
 
 ## 7. Make the source public and build the final tarball
 
-- [ ] In GitHub repository settings, use **General → Danger Zone → Change
+- [x] In GitHub repository settings, use **General → Danger Zone → Change
   visibility → Public** when ready to expose the reviewed source and history.
-- [ ] Check the repository, README, embedded video, and documentation links in a
+- [ ] Check the repository, README, video download, and documentation links in a
   signed-out browser.
 - [ ] After the release branch is merged, use the exact verified commit on main:
 

@@ -1,6 +1,7 @@
 src/shell/tokenize.ts and src/shell/parse.ts are adapted from PlanSentry.
 Copyright (c) 2026 plansentry contributors.
-Source: https://github.com/RobeyBeswick/plansentry
+Source: https://github.com/RobeyBeswick/plansentry (private repository; source is
+not publicly available).
 
 PlanSentry is distributed under the MIT License. The permission notice and
 disclaimer in this project's LICENSE also apply to these files.

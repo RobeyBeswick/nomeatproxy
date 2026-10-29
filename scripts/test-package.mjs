@@ -23,6 +23,8 @@ try {
   assert.ok(files.includes('dist/cli.js'));
   assert.ok(files.includes('dist/adapters/opencode.js'));
   assert.ok(files.includes('dist/engine.d.ts'));
+  assert.ok(files.includes('CHANGELOG.md') && files.includes('SECURITY.md'));
+  assert.ok(!files.includes('docs/PUBLISHING.md'));
   assert.ok(files.includes('LICENSE') && files.includes('NOTICE'));
   assert.ok(!files.some(f => /nomeatproxy-hook|\.local\.json|node_modules|^test\/|^src\//.test(f)), files.join('\n'));
   const prefix = join(stage, 'prefix with spaces');

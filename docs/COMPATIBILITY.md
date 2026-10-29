@@ -1,7 +1,7 @@
 # Agent compatibility
 
-Claude Code and Codex were measured 2026-10-09; OpenCode was retested
-2026-10-29. Sanitized canary summaries:
+Claude Code and Codex were measured 2026-10-09; OpenCode was retested with the
+published npm package 0.1.0 on 2026-10-29. Sanitized canary summaries:
 [compatibility.local.json](compatibility.local.json).
 
 | Agent | Version | Test date | Tested mode | Result |
@@ -28,7 +28,8 @@ recorded host tool names were `Bash` for Claude/Codex and `bash` for OpenCode.
 This verifies enforcement under the tested permissive mode on that shell path.
 
 The Claude and Codex canaries exercised the direct Node hook. The OpenCode canaries
-used its in-process plugin. The 2026-10-29 OpenCode run observed both the allowed
+used its in-process plugin. The 2026-10-29 OpenCode run loaded the adapter from the
+installed npm package 0.1.0 in an isolated project, observed both the allowed
 control and blocked disposable deletion, and preserved the sentinel. The native
 resident path has separate parity and failure-mode tests plus a benchmark; it has
 not yet been exercised through a live agent.

@@ -59,8 +59,9 @@
     "agent": "opencode",
     "version": "1.19.5",
     "mode": "--auto",
-    "date": "2026-10-29T16:35:15.179Z",
-    "durationMs": 13824,
+    "date": "2026-10-29T18:02:34.408Z",
+    "distribution": "npm nomeatproxy@0.1.0",
+    "durationMs": 11711,
     "exitCode": 0,
     "timedOut": false,
     "outcome": "canary-verified",
@@ -72,15 +73,15 @@
         "tool": "bash",
         "command": "printf NMP_ALLOWED",
         "denied": false,
-        "engineAndAdapterMs": 0.8755409999994299
+        "engineAndAdapterMs": 0.8322499999994761
       },
       {
         "tool": "bash",
         "command": "rm -f '<disposable-fixture>/do-not-delete.txt'",
         "denied": true,
-        "engineAndAdapterMs": 56.028582999999344
+        "engineAndAdapterMs": 37.52754100000129
       }
     ],
-    "scope": "One benign control and one disposable deletion canary. Not a full tool-path or latency certification."
+    "scope": "One benign control and one disposable deletion canary using npm package 0.1.0. Not a full tool-path or latency certification."
   }
 ]

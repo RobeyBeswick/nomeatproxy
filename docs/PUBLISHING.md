@@ -8,13 +8,13 @@ The handoff itself does not publish a package or change repository visibility.
 
 | Area | Status |
 | --- | --- |
-| Source | `chore/public-launch`, release-preparation changes based on `main` |
-| Package | `0.1.0`, publishing enabled in the release branch |
-| GitHub | Repository is public; no release or version tag exists |
-| npm | Package returned 404 on 2026-10-29; npm authentication is now confirmed, but the package is not published |
-| CI | All six PR matrix jobs passed on release head `be30fdc` on 2026-10-29 |
-| Live compatibility | OpenCode 1.19.5 verified 2026-10-29; Claude Code 2.1.295 and Codex 0.162.0 remain tested 2026-10-09; Antigravity is adapter-only |
-| Public-content review | Gitleaks and Actions-log scans clean; artifact inspected; visual sampling every 2 seconds and user audio review found no private demo content; signed-out link check found a broken attachment URL, removed in this branch |
+| Source | `main` at release commit `7e329f1`; repository is public |
+| Package | `nomeatproxy@0.1.0` published; `latest` points to `0.1.0` |
+| GitHub | Public; annotated tag `v0.1.0` and GitHub Release are available |
+| npm | `0.1.0` verified on 2026-10-29; the registry SHA-1 matches the inspected tarball |
+| CI | All six macOS/Linux/Windows × Node 22/24 jobs passed on release commit `7e329f1` |
+| Live compatibility | OpenCode 1.19.5 verified using the published npm package 0.1.0; Claude Code 2.1.295 and Codex 0.162.0 remain tested 2026-10-09; Antigravity is adapter-only |
+| Public-content review | Gitleaks and Actions-log scans clean; artifact and demo reviewed; signed-out README/MOV links work; PlanSentry source is private and identified as such in `NOTICE` |
 
 Local verification on 2026-10-29 passed on `chore/public-launch` with Node.js
 22.23.4/npm 10.9.9 and Node.js 24.22.2/npm 11.19.1, with Go installed:
@@ -25,9 +25,10 @@ Local verification on 2026-10-29 passed on `chore/public-launch` with Node.js
 - `npm run demo -- --auto` and `npm pack --dry-run`; the package includes the changelog and security policy, excludes this publishing checklist, local reports, fixtures, native binaries, and the demo video.
 - `npm audit`: zero reported vulnerabilities. `npm outdated` found no newer compatible versions; `npm update` made no dependency changes.
 - `gitleaks git --redact .`: history scan and current-file scan found no leaks.
+- Published-package verification in isolated prefixes: CLI reported `0.1.0`, install/doctor/uninstall passed, and OpenCode 1.19.5 allowed the control, blocked the disposable deletion, and preserved the sentinel.
 
-Rerun verification on the exact final `main` commit and repeat the signed-out
-link check after the release PR is merged.
+The final `main` release commit and public npm artifact were verified on
+2026-10-29. Repeat checks for future release commits.
 
 ## 1. Set up the personal laptop
 
@@ -68,7 +69,7 @@ package name and update documentation and packaging tests before continuing.
   private terminal content, notifications, paths, and identifiers.
 - [x] Review existing Actions logs and artifacts before changing visibility;
   they can become publicly accessible with the repository.
-- [ ] Check links as an outside reader. The PlanSentry source repository remains
+- [x] Check links as an outside reader. The PlanSentry source repository remains
   private; its source availability is clarified in `NOTICE`. Preserve the
   copyright and license attribution. This release does not require making
   another repository public.
@@ -184,14 +185,14 @@ it was freshly validated.
   are absent.
 - [x] Review and commit release changes with a conventional commit message.
   Stage specific intended files rather than generated reports or credentials.
-- [ ] Push the branch and merge through a reviewed pull request:
+- [x] Push the branch and merge through a reviewed pull request:
 
 ```sh
 git push -u origin chore/public-launch
 ```
 
 - [x] Obtain a successful `Check` run for the release candidate. All six jobs
-  passed on `be30fdc`; rerun after any additional release-content changes. The
+  passed on `7e329f1`; rerun after any additional release-content changes. The
   matrix covers macOS, Linux, Windows, and Node 22/24.
 
 If changing visibility before rerunning CI is necessary, complete the public
@@ -201,9 +202,9 @@ review first. Still require passing CI before publishing the package or post.
 
 - [x] In GitHub repository settings, use **General → Danger Zone → Change
   visibility → Public** when ready to expose the reviewed source and history.
-- [ ] Check the repository, README, video download, and documentation links in a
+- [x] Check the repository, README, video download, and documentation links in a
   signed-out browser.
-- [ ] After the release branch is merged, use the exact verified commit on main:
+- [x] After the release branch is merged, use the exact verified commit on main:
 
 ```sh
 git switch main
@@ -215,9 +216,9 @@ npm run test:package
 npm pack
 ```
 
-- [ ] Confirm the working tree is clean, record the release commit, and inspect
+- [x] Confirm the working tree was clean, record the release commit, and inspect
   `nomeatproxy-0.1.0.tgz`. Publish from this checkout without changing its contents.
-- [ ] Use a GitHub Release attachment for the public tarball download, and
+- [x] Use a GitHub Release attachment for the public tarball download, and
   update setup instructions that currently point readers at Actions artifacts.
 
 ## 8. Publish npm and create the GitHub Release
@@ -231,16 +232,16 @@ npm publish ./nomeatproxy-0.1.0.tgz --access public
 npm view nomeatproxy@0.1.0 version dist-tags
 ```
 
-- [ ] Confirm version `0.1.0` is available and the intended `latest` tag points
+- [x] Confirm version `0.1.0` is available and the intended `latest` tag points
   to it.
-- [ ] Tag the same recorded release commit and push the tag:
+- [x] Tag the same recorded release commit and push the tag:
 
 ```sh
 git tag -a v0.1.0 -m "NoMeatProxy 0.1.0"
 git push origin v0.1.0
 ```
 
-- [ ] Create a GitHub Release for `v0.1.0`, attach the same
+- [x] Create a GitHub Release for `v0.1.0`, attach the same
   `nomeatproxy-0.1.0.tgz`, and include the changelog and prototype limitations.
   For example, after preparing and reviewing a release-notes file:
 
@@ -269,13 +270,13 @@ nomeatproxy check "rm -rf /"
 The final two commands inspect strings; they do not execute them. The last
 command should block and return a nonzero exit status.
 
-- [ ] Verify the CLI reports `0.1.0`, restart the agent, and check its hook
-  diagnostics.
-- [ ] Validate a live allow/block canary in a disposable workspace using the
+- [x] Verify the published CLI reports `0.1.0`, installs and diagnoses an
+  integration in an isolated home, and removes it on uninstall.
+- [x] Validate a live allow/block canary in a disposable workspace using the
   installed package, not an adapter imported from this source checkout.
-- [ ] Confirm uninstall removes the managed integration.
-- [ ] Check that the unversioned public quickstart installs the intended release.
-- [ ] Mark the npm roadmap milestone complete and remove remaining
+- [x] Confirm uninstall removes the managed integration.
+- [x] Check that the unversioned public quickstart installs the intended release.
+- [x] Mark the npm roadmap milestone complete and remove remaining
   "not published yet" wording.
 - [ ] Publish the post with the public repository, npm installation command,
   and working demo. Describe it as a local accident guard for selected shell

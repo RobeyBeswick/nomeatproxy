@@ -32,7 +32,7 @@ production safety certification.
   setup diagnostics with non-executing checker fixtures.
 - [x] Package prebuilt JavaScript for npm, with agent installers and isolated
   tarball installation tests on macOS, Linux, and Windows in CI.
-- [ ] Publish the first npm release.
+- [x] Publish the first npm release: [`nomeatproxy@0.1.0`](https://www.npmjs.com/package/nomeatproxy) (2026-10-29).
 - [ ] Add a Homebrew tap backed by a published, checksummed release artifact.
 - [x] Verify a live allow/block canary in Claude bypass mode, Codex permissive
   mode, and OpenCode auto mode. Versions and exact test scope are recorded.

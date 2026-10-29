@@ -12,7 +12,7 @@ The handoff itself does not publish a package or change repository visibility.
 | Package | `0.1.0`, publishing enabled in the release branch |
 | GitHub | Repository is public; no release or version tag exists |
 | npm | Package returned 404 on 2026-10-29; npm authentication is now confirmed, but the package is not published |
-| CI | Five of six PR matrix jobs pass; macOS 22 is queued for a runner |
+| CI | All six PR matrix jobs passed on release head `be30fdc` on 2026-10-29 |
 | Live compatibility | OpenCode 1.19.5 verified 2026-10-29; Claude Code 2.1.295 and Codex 0.162.0 remain tested 2026-10-09; Antigravity is adapter-only |
 | Public-content review | Gitleaks and Actions-log scans clean; artifact inspected; visual sampling every 2 seconds and user audio review found no private demo content; signed-out link check found a broken attachment URL, removed in this branch |
 
@@ -190,9 +190,9 @@ it was freshly validated.
 git push -u origin chore/public-launch
 ```
 
-- [ ] Obtain a successful `Check` run for the final release commit. The latest
-  PR run passed five matrix jobs; macOS 22 is queued due runner capacity. All six
-  combinations of macOS, Linux, Windows, and Node 22/24 must pass.
+- [x] Obtain a successful `Check` run for the release candidate. All six jobs
+  passed on `be30fdc`; rerun after any additional release-content changes. The
+  matrix covers macOS, Linux, Windows, and Node 22/24.
 
 If changing visibility before rerunning CI is necessary, complete the public
 review first. Still require passing CI before publishing the package or post.

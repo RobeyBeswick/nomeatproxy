@@ -57,10 +57,10 @@
   },
   {
     "agent": "opencode",
-    "version": "1.18.30",
+    "version": "1.19.5",
     "mode": "--auto",
-    "date": "2026-10-09T08:27:05.788Z",
-    "durationMs": 16564,
+    "date": "2026-10-29T16:35:15.179Z",
+    "durationMs": 13824,
     "exitCode": 0,
     "timedOut": false,
     "outcome": "canary-verified",
@@ -72,13 +72,13 @@
         "tool": "bash",
         "command": "printf NMP_ALLOWED",
         "denied": false,
-        "engineAndAdapterMs": 0.5539159999989351
+        "engineAndAdapterMs": 0.8755409999994299
       },
       {
         "tool": "bash",
         "command": "rm -f '<disposable-fixture>/do-not-delete.txt'",
         "denied": true,
-        "engineAndAdapterMs": 62.62275000000045
+        "engineAndAdapterMs": 56.028582999999344
       }
     ],
     "scope": "One benign control and one disposable deletion canary. Not a full tool-path or latency certification."

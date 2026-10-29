@@ -52,14 +52,10 @@ review when it’s time to step in.
 Requires **Node.js 22+** and **Git**. No model subscription for the guard.
 No Go compiler for the standard installation. Your finger may now leave the approval button.
 
-An npm registry release is planned. Build and install from a checkout:
+Install from npm:
 
 ```sh
-git clone https://github.com/RobeyBeswick/nomeatproxy.git
-cd nomeatproxy
-npm ci
-npm pack
-npm install --global ./nomeatproxy-0.0.1.tgz
+npm install --global nomeatproxy
 nomeatproxy install claude
 nomeatproxy doctor claude
 ```
@@ -227,7 +223,8 @@ permissions scoped to the work.
 
 Yes. It builds on PlanSentry’s approach: inspect the consequences and show why an
 operation needs a human. PlanSentry integration is planned; infrastructure protection
-is not included in NoMeatProxy yet. The shell parser is adapted from PlanSentry.
+is not included in NoMeatProxy yet. Some shell parsing code is adapted from PlanSentry;
+its source repository is private and is not required to use NoMeatProxy. See [NOTICE](NOTICE).
 
 <a id="contributing"></a>
 

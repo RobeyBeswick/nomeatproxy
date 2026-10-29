@@ -93,7 +93,7 @@ before continuing; do not treat every newer major as required release work.
 
 - [x] Confirm `package.json` and `package-lock.json` both report `0.1.0`, with
   publishing enabled.
-- [ ] Commit the reviewed lockfile.
+- [x] Review dependency changes and commit the lockfile.
 - [x] Keep Node types aligned with the minimum supported runtime.
 - [x] If changing the supported Node versions, update `engines`, documentation,
   and the CI matrix together.
@@ -181,7 +181,7 @@ it was freshly validated.
 - [x] Inspect the package file list: compiled JavaScript, declarations,
   documentation, and licensing are present; secrets, local reports, fixtures,
   native binaries, and the demo video are absent.
-- [ ] Review and commit release changes with a conventional commit message.
+- [x] Review and commit release changes with a conventional commit message.
   Stage specific intended files rather than generated reports or credentials.
 - [ ] Push the branch and merge through a reviewed pull request:
 

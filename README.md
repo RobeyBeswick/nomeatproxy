@@ -103,8 +103,6 @@ faster hook transport. Homebrew distribution is not published yet.
 
 ## 🎬 Demo
 
-https://github.com/user-attachments/assets/b013d012-d3b3-4b5c-8163-b9f8041cd38a
-
 [Download the MOV](docs/assets/nomeatproxy-video.mov)
 
 Run the repeatable walkthrough from a checkout:

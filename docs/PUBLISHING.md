@@ -10,24 +10,24 @@ The handoff itself does not publish a package or change repository visibility.
 | --- | --- |
 | Source | `chore/public-launch`, release-preparation changes based on `main` |
 | Package | `0.1.0`, publishing enabled in the release branch |
-| GitHub | Repository is private; no release or version tag exists |
-| npm | Package returned 404 on 2026-10-29; this release machine is not logged in to npm |
-| CI | Latest `Check` run did not start its jobs because of a billing/spending-limit block |
+| GitHub | Repository is public; no release or version tag exists |
+| npm | Package returned 404 on 2026-10-29; npm authentication is now confirmed, but the package is not published |
+| CI | Five of six PR matrix jobs pass; macOS 22 is queued for a runner |
 | Live compatibility | OpenCode 1.19.5 verified 2026-10-29; Claude Code 2.1.295 and Codex 0.162.0 remain tested 2026-10-09; Antigravity is adapter-only |
-| Public-content review | Gitleaks and Actions-log scans clean; artifact inspected; visual sampling every 2 seconds found only scripted demo content; audio review and signed-out link review remain |
+| Public-content review | Gitleaks and Actions-log scans clean; artifact inspected; visual sampling every 2 seconds and user audio review found no private demo content; signed-out link check found a broken attachment URL, removed in this branch |
 
 Local verification on 2026-10-29 passed on `chore/public-launch` with Node.js
-22.23.4, npm 10.9.9, and Go installed:
+22.23.4/npm 10.9.9 and Node.js 24.22.2/npm 11.19.1, with Go installed:
 
-- `npm ci`, `npm run check` (80 passed, 6 native tests skipped pending the separate native run), and all eight native-transport tests.
-- Packed-package installation test: 35 files, approximately 39 KiB compressed.
+- `npm ci` and `npm run check` passed on both Node versions. Node 22: 80 tests passed, 6 native tests skipped; separate native run passed all 8. Node 24: all 86 tests passed, plus all 8 native tests.
+- Packed-package installation test: 35 files, approximately 39 KiB compressed, on both Node versions.
 - Evaluation corpus: 16 benign cases, 17 covered hazards, and three explicit coverage gaps.
 - `npm run demo -- --auto` and `npm pack --dry-run`; the package includes the changelog and security policy, excludes this publishing checklist, local reports, fixtures, native binaries, and the demo video.
 - `npm audit`: zero reported vulnerabilities. `npm outdated` found no newer compatible versions; `npm update` made no dependency changes.
-- `gitleaks git --redact .`: nine commits scanned, no leaks found.
+- `gitleaks git --redact .`: history scan and current-file scan found no leaks.
 
-Rerun verification on the exact final `main` commit. Gitleaks does not replace
-the remaining audio and signed-out link review.
+Rerun verification on the exact final `main` commit and repeat the signed-out
+link check after the release PR is merged.
 
 ## 1. Set up the personal laptop
 
@@ -46,7 +46,7 @@ npm ci
   package does not require Go; see [setup](SETUP.md#optional-fast-transport).
 - [x] Install and authenticate any agent clients used for live compatibility
   checks. Do not copy credentials or agent settings into this repository.
-- [ ] Confirm access to the npm account that will own the package:
+- [x] Confirm access to the npm account that will own the package:
 
 ```sh
 npm login
@@ -64,8 +64,8 @@ package name and update documentation and packaging tests before continuing.
   after installing Gitleaks, and inspect any findings.
 - [x] Review tracked files and commit metadata for personal paths, internal
   URLs, account IDs, customer details, and secrets. Keep scan reports private.
-- [ ] Watch `docs/assets/nomeatproxy-video.mov` and inspect the embedded README
-  video for private terminal content, notifications, paths, and identifiers.
+- [x] Watch `docs/assets/nomeatproxy-video.mov` and inspect the README video for
+  private terminal content, notifications, paths, and identifiers.
 - [x] Review existing Actions logs and artifacts before changing visibility;
   they can become publicly accessible with the repository.
 - [ ] Check links as an outside reader. The PlanSentry source repository remains
@@ -114,7 +114,7 @@ matrix to pass. Action modernization can follow the first release.
 - [x] Update retained tarball examples from `0.0.1` to `0.1.0`.
 - [x] Add a root `CHANGELOG.md` entry for `0.1.0`, including supported operations,
   agent integrations, installation, and known limitations.
-- [ ] Add a root `SECURITY.md` with a working private reporting route. Configure
+- [x] Add a root `SECURITY.md` with a working private reporting route. Configure
   that route before advertising it.
 - [x] Keep the prototype label, POSIX-shell coverage limits, and Antigravity's
   experimental status unless fresh evidence supports changing them.
@@ -190,18 +190,18 @@ it was freshly validated.
 git push -u origin chore/public-launch
 ```
 
-- [ ] Resolve the Actions billing/spending-limit block and obtain a successful
-  `Check` run for the final release commit. All six combinations of macOS,
-  Linux, Windows, and Node 22/24 should pass.
+- [ ] Obtain a successful `Check` run for the final release commit. The latest
+  PR run passed five matrix jobs; macOS 22 is queued due runner capacity. All six
+  combinations of macOS, Linux, Windows, and Node 22/24 must pass.
 
 If changing visibility before rerunning CI is necessary, complete the public
 review first. Still require passing CI before publishing the package or post.
 
 ## 7. Make the source public and build the final tarball
 
-- [ ] In GitHub repository settings, use **General → Danger Zone → Change
+- [x] In GitHub repository settings, use **General → Danger Zone → Change
   visibility → Public** when ready to expose the reviewed source and history.
-- [ ] Check the repository, README, embedded video, and documentation links in a
+- [ ] Check the repository, README, video download, and documentation links in a
   signed-out browser.
 - [ ] After the release branch is merged, use the exact verified commit on main:
 
